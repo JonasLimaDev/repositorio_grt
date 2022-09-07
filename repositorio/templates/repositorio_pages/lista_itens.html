@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container-xl px-md-0 px-2 py-5">
+    <div class="row px-md-0 px-3 g-3 align-items-center  justify-content-between ">
+        <div class="col-md-4 col-12">
+            <nav aria-label="breadcrumb ">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item fs-4" >
+                        <a class=" link-info text-decoration-none" href="{%url 'categorias' %}">Categorias</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-4 " aria-current="page">
+                        <a class="link-secondary text-decoration-none  disabled"  href="{%url 'listar_itens' categoria.id%}"> {{categoria}}</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-md-6 col-12 ">
+            <form class="row gy-2 gx-2 align-items-center"  method="get">
+                <div class="col-md-6 col-12 my-md-auto my-1">
+                    <select class="form-select" id="floatingSelectAutor" aria-label="Floating label select example" name="autor">
+                        <option {% if not autor_filtro  %} selected {%endif%} value="0">Autor</option>
+                        {%for autor in autores%}
+                        <option {% if  autor_filtro == autor.id %} selected {%endif%} value="{{autor.id}}">{{autor}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="col-md-4 col-12 my-md-auto my-1">
+                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="nivel">
+                        <option selected value="0">Nível de Ensino</option>
+                        {%for nivel in niveis%}
+                        <option {% if nivel_filtro == nivel.id %} selected {%endif%}value="{{nivel.id}}">{{nivel}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="col-md-1 col-12 my-md-auto my-1">
+                    <button class="btn btn-outline-secondary  me-2 my-md-auto my-2" type="submit" >
+                        Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {%if lista_itens%}
+    <div class="row row-cols-md-2 row-cols-1 px-md-0 px-1 g-4 py-5 ">
+        {%for item in lista_itens%}
+        <div class="col ">
+            <div class="card  h-100   border-info">
+                <a href="{%url 'item' categoria.id item.id %}" class="list-group-item list-group-item-action">
+                    <div class="row g-0">
+                        <div class="col-md-4 col-12  mx-auto my-auto ">
+                            <img src="{{item.imagem_apoio.url}}" class="img-fluid py-auto border-none mx-auto d-block" alt="...">
+                        </div>
+                        <div class="col-md-8 col-12 border-start">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.nome_item}}</h5>
+                                <p class="card-text my-0">
+                                    {%if item.descricao%}
+                                    {{item.descricao}}
+                                    {%endif%}
+                                </p>
+                                <hr class="my-1">
+                                <p class="card-text my-0">
+                                    <span class="fw-bold">Autores:</span>
+                                    {%for autor in item.autores.all%}
+                                    {{autor}}{%if not forloop.last%},{%endif%}
+                                    {%endfor%}
+                                </p>
+                                <p class="card-text my-0">
+                                    <span class="fw-bold">Nível de Ensino:</span>
+                                    {%for nivel in item.niveis_ensino.all%}
+                                    {{nivel}}{%if not forloop.last%},{%endif%}
+                                    {%endfor%}
+                                </p>
+                                <p class="card-text">
+                                    <span class="fw-bold">Subcategorias:</span>
+                                    {%for nivel in item.subcategorias.all%}
+                                    {{nivel}}{%if not forloop.last%},{%endif%}
+                                    {%endfor%}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    {%else%}
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+        <h4 class="text-muted"> Nenhum item encontrado</h4>
+    </div>
+    {%endif%}
+</div>
+{% endblock main %}

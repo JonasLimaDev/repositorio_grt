@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container px-2 py-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb ">
+                <li class=" pb-2 breadcrumb-item active fs-4" aria-current="page">Categorias</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+        {%for categoria in  object_list%}
+        <div class="col">
+                <!-- card -->
+                <div class="card  mb-2 border-secondary">
+                    <a href="{% url 'listar_itens' categoria.id %}" class="list-group-item list-group-item-action" aria-current="true">
+
+                    <div class="row g-0">
+                        <div class="col-md-4 col-12   mx-auto my-auto">
+                            {%if categoria.imagem_capa%}
+                            <img src="{{categoria.imagem_capa.url}}" class="img-fluid  d-block"  alt="...">
+                            {%else%}
+                            <svg class="bd-placeholder-img img-fluid rounded-start" width="100%" height="50%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#868e96"></rect>
+                                <text x="10" y="50%" fill="#dee2e6" dy=".3em">Imagem da Categoria</text>
+                            </svg>
+                            {%endif%}
+                        </div>
+                        <div class="col-md-8 col-12 ">
+                            <div class="card-body">
+                                <h5 class="card-title">{{categoria.nome_categoria}}</h5>
+                                <p class="card-text">
+                                    {%if categoria.descricao%}
+                                    {{categoria.descricao}}
+                                    {%endif%}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                         </a>
+                </div>
+                <!-- card -->
+
+        </div>
+
+        {%endfor%}
+
+    </div>
+</div>
+
+{% endblock main %}

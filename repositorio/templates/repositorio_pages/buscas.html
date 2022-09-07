@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container px-2 py-4">
+    <div class=" mx-md-5 px-md-5">
+        <form class="d-flex" role="search" method="post">
+            {%csrf_token%}
+            <input class="form-control me-2" type="search" placeholder="Busca" aria-label="busca" name="busca">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+        <div class="d-flex justify-content-between">
+
+            <h5 class="text-muted mt-2">Você busco por: {{objeto_busca}}</h5>
+            <h5 class="text-muted mt-2">Tipo de Resultado: {%if tipo_resultado %}{{tipo_resultado}}{%endif%}</h5>
+
+        </div>
+    </div>
+    <hr class="mb-0">
+    {%if itens_busca%}
+    <div class="row row-cols-md-2 row-cols-1  g-4 py-4 ">
+        {%for item in itens_busca%}
+        <div class="col">
+            <div class="card  h-100  border-info" >
+                <a href="{%url 'item' item.id %}" class="list-group-item list-group-item-action">
+                    <div class="row g-0">
+                        <div class="col-md-4 col-12  mx-auto my-auto ">
+                            <img src="{{item.imagem_apoio.url}}" class="rounded  img-fluid " alt="...">
+                        </div>
+                        <div class="col-md-8 col-12 border-start">
+                            <div class="card-body">
+                                <h5 class="card-title">{{item.nome_item}}</h5>
+                                <p class="card-text my-0">
+                                    {%if item.descricao%}
+                                    {{item.descricao}}
+                                    {%endif%}
+                                </p>
+                                <hr class="my-1">
+                                <p class="card-text my-0">
+                                    <span class="fw-bold">Autores:</span>
+                                    {%for autor in item.autores.all%}
+                                    {{autor}}{%if not forloop.last%},{%endif%}
+                                    {%endfor%}
+                                </p>
+                                <p class="card-text my-0">
+                                    <span class="fw-bold">Nível de Ensino:</span>
+                                    {%for nivel in item.niveis_ensino.all%}
+                                    {{nivel}}{%if not forloop.last%},{%endif%}
+                                    {%endfor%}
+                                </p>
+                                <p class="card-text">
+                                    <span class="fw-bold">Subcategorias:</span>
+                                    {%for nivel in item.subcategorias.all%}
+                                    {{nivel}}{%if not forloop.last%},{%endif%}
+                                    {%endfor%}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    {%else%}
+    <div class="row g-4 py-4 row-cols-1 row-cols-lg-2">
+        <h4 class="text-muted"> Nenhum item encontrado</h4>
+    </div>
+    {%endif%}
+</div>
+{% endblock main %}

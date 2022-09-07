@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container px-2 py-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item fs-4" ><a class="link-info text-decoration-none " href="{%url 'categorias' %}">Categorias</a></li>
+        <li class="breadcrumb-item active fs-4 " aria-current="page"><a class="link-info text-decoration-none" href="{%url 'listar_itens'  categoria.id %}">{{categoria}}</a></li>
+        <li class="breadcrumb-item active fs-4 " aria-current="page">{{item.nome_item}}</li>
+    </ol>
+    <div class="g-4 py-3 ">
+
+        <a href="" class="list-group-item list-group-item-action text-center"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <figure class="figure">
+                <img src="{{item.imagem_apoio.url}}" class="figure-img img-fluid rounded" alt="..."  width="50%" height="50%" style=" object-fit: cover !important;" >
+                <figcaption class="figure-caption">As palavras escritas nao serão impressas pela impressora Braille, estas são apenas para apoio visual</figcaption>
+            </figure>
+        </a>
+        <hr>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Descrição do Item</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Nível de Ensino</th>
+                    <th scope="col">Categorias</th>
+                    <th scope="col">Subcategorias</th>
+                    <th scope="col">Data de Envio</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        {%if item.descricao%}
+                        {{item.descricao}}
+                        {%endif%}
+                    </td>
+                    <td>
+                        {%for autor in item.autores.all%}
+                        {{autor}}{%if not forloop.last%},{%endif%}
+                        {%endfor%}
+                    </td>
+                    <td>
+                        {%for nivel in item.niveis_ensino.all%}
+                        {{nivel}}{%if not forloop.last%},{%endif%}
+                        {%endfor%}
+                    </td>
+                    <td>
+                        {%for categoria in item.categorias.all%}
+                        {{categoria}}{%if not forloop.last%},{%endif%}
+                        {%endfor%}
+                    </td>
+                    <td>
+                        {%for subcategoria in item.subcategorias.all%}
+                        {{subcategoria}}{%if not forloop.last%},{%endif%}
+                        {%endfor%}
+                    </td>
+                    <td>{{item.data_upload}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-grid gap-2 col-6 py-2 mx-auto">
+            <a class="btn btn-primary" href="{{item.arquivo_grt.url}}" target="_blank" >Baixar GRT</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" >
+        <div class="modal-content  bg-transparent " style="border:none !important;">
+
+            <div class="d-flex justify-content-end my-sm-2">
+                <button type="button" class="btn btn-outline-warning " data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+
+            <div class=" mb-1 text-center bg-white">
+                <img class="rounded img-fluid" src="{{item.imagem_apoio.url}}" title="Imagem">
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+{% endblock main %}
